@@ -14,11 +14,11 @@ class TradingBot:
         ma_s = self.moving_average(prices, self.ma_short)
         ma_l = self.moving_average(prices, self.ma_long)
         if ma_s is None or ma_l is None:
-        return {'signal': 'HOLD'}
+            return {'signal': 'HOLD'}
         if ma_s > ma_l:
-        return {'signal': 'BUY'}
+            return {'signal': 'BUY'}
         elif ma_s < ma_l:
-        return {'signal': 'SELL'}
+            return {'signal': 'SELL'}
         return {'signal': 'HOLD'}
 
 
