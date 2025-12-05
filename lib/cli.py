@@ -11,6 +11,7 @@ from helpers import (
     approve_withdrawal_flow,
     list_transactions_flow,
     make_admin_flow
+
 )
 
 
@@ -48,6 +49,8 @@ def main():
 
         elif choice == "8":
             make_admin_flow()
+        elif choice == "9":
+            deposit_funds_flow()
 
         else:
             print("Invalid choice, try again.")

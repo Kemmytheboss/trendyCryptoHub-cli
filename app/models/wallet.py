@@ -11,6 +11,7 @@ class Wallet(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
 
     balance = Column(Float, default=0.0)
+    total_deposited = Column(Float, default=0.0)
 
     deposit_address = Column(String, unique=True, index=True)
 
@@ -26,6 +27,17 @@ class Wallet(Base):
         address = str(uuid.uuid4())
         self.deposit_address = address
         return address
+
+    # ------------------ DEPOSIT FUNDS ------------------
+    def deposit(self, amount):
+        """Increase wallet balance and total deposit history."""
+        if amount <= 0:
+            return False, "Invalid deposit amount"
+
+        self.balance += amount
+        self.total_deposited += amount
+
+        return True, f"Deposited {amount} USDT"
 
     # ------------------ WITHDRAW REQUEST ------------------
     def request_withdrawal(self, amount, address):
@@ -54,4 +66,7 @@ class Wallet(Base):
 
         # Reset fields
         self.withdrawal_pending = False
-        self.withdraw
+        self.withdrawal_amount = 0.0
+        self.withdrawal_address = None
+
+        return True, f"Withdrawal of {approved_amount} sent to {approved_address}"

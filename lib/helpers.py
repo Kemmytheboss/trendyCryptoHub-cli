@@ -115,6 +115,32 @@ def get_deposit_address_flow():
 
     db.close()
 
+# -----------------DEPOSIT FLOW---------------------------
+def deposit_funds_flow():
+    db = SessionLocal()
+
+    user_id = int(input("Enter User ID: "))
+    amount = float(input("Enter deposit amount: "))
+
+    user = User.find_by_id(db, user_id)
+    if not user:
+        print("❌ User not found.")
+        db.close()
+        return
+
+    wallet = user.wallets[0]
+
+    success, msg = wallet.deposit(amount)
+    db.commit()
+
+    if success:
+        print(f"✅ {msg}")
+        record_transaction(db, user.id, "DEPOSIT", amount)
+    else:
+        print(f"❌ Deposit failed")
+
+    db.close()
+
 
 # ------------------ REQUEST WITHDRAWAL ------------------
 def request_withdrawal_flow():
