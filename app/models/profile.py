@@ -16,8 +16,8 @@ class Profile(Base):
 
     @classmethod
     def create_for_user(cls, db, user, **kwargs):
-    profile = cls(user_id=user.id, **kwargs)
-    db.add(profile)
-    db.commit()
-    db.refresh(profile)
-    return profile
+        profile = cls(user_id=user.id, **kwargs)
+        db.add(profile)
+        db.commit()
+        db.refresh(profile)
+        return profile
