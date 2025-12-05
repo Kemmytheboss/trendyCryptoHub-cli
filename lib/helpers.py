@@ -62,7 +62,7 @@ def create_user_flow():
     password = input("Enter password: ").strip()
 
     if User.find_by_email(db, email):
-        print("❌ User already exists.")
+        print("User already exists.")
         db.close()
         return
 
@@ -73,8 +73,8 @@ def create_user_flow():
     db.add(wallet)
     db.commit()
 
-    print(f"✅ User created with ID {user.id}")
-    print(f"💼 Wallet deposit address: {wallet.deposit_address}")
+    print(f"User created with ID {user.id}")
+    print(f"Wallet deposit address: {wallet.deposit_address}")
 
     # Record user registration
     record_transaction(db, user.id, "ACCOUNT_CREATE", 0)
@@ -102,7 +102,7 @@ def get_deposit_address_flow():
 
     user = User.find_by_id(db, user_id)
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         return
 
     wallet = user.wallets[0]
@@ -111,7 +111,7 @@ def get_deposit_address_flow():
         wallet.generate_deposit_address()
         db.commit()
 
-    print(f"💰 Deposit Address: {wallet.deposit_address}")
+    print(f"Deposit Address: {wallet.deposit_address}")
 
     db.close()
 
@@ -124,7 +124,7 @@ def deposit_funds_flow():
 
     user = User.find_by_id(db, user_id)
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         db.close()
         return
 
@@ -134,10 +134,10 @@ def deposit_funds_flow():
     db.commit()
 
     if success:
-        print(f"✅ {msg}")
+        print(f"{msg}")
         record_transaction(db, user.id, "DEPOSIT", amount)
     else:
-        print(f"❌ Deposit failed")
+        print(f"Deposit failed")
 
     db.close()
 
@@ -151,7 +151,7 @@ def request_withdrawal_flow():
 
     user = User.find_by_id(db, user_id)
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         return
 
     wallet = user.wallets[0]
@@ -159,10 +159,10 @@ def request_withdrawal_flow():
     db.commit()
 
     if success:
-        print(f"✅ {msg}")
+        print(f"{msg}")
         record_transaction(db, user.id, "WITHDRAW_REQUEST", amount)
     else:
-        print(f"❌ {msg}")
+        print(f"{msg}")
 
     db.close()
 
@@ -175,19 +175,19 @@ def approve_withdrawal_flow():
     admin = User.find_by_id(db, admin_id)
 
     if not admin:
-        print("❌ Admin user not found.")
+        print("Admin user not found.")
         return
 
     roles = [r.name for r in admin.roles]
     if "ADMIN" not in roles:
-        print("❌ NOT AUTHORIZED. ADMIN role required.")
+        print("NOT AUTHORIZED. ADMIN role required.")
         return
 
     user_id = int(input("Enter User ID to approve withdrawal for: "))
     user = User.find_by_id(db, user_id)
 
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         return
 
     wallet = user.wallets[0]
@@ -197,10 +197,10 @@ def approve_withdrawal_flow():
     db.commit()
 
     if success:
-        print(f"✅ {msg}")
+        print(f"{msg}")
         record_transaction(db, user.id, "WITHDRAW_APPROVED", approved_amount)
     else:
-        print(f"❌ {msg}")
+        print(f"{msg}")
 
     db.close()
 
@@ -213,7 +213,7 @@ def list_transactions_flow():
     user = User.find_by_id(db, user_id)
 
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         return
 
     print(f"\n===== TRANSACTIONS FOR USER {user_id} =====")
@@ -231,7 +231,7 @@ def make_admin_flow():
     user = User.find_by_id(db, user_id)
 
     if not user:
-        print("❌ User not found.")
+        print("User not found.")
         db.close()
         return
 
@@ -240,9 +240,9 @@ def make_admin_flow():
     if admin_role not in user.roles:
         user.roles.append(admin_role)
         db.commit()
-        print(f"✅ User {user_id} is now an ADMIN!")
+        print(f"User {user_id} is now an ADMIN!")
     else:
-        print("ℹ User is already ADMIN.")
+        print("User is already ADMIN.")
 
     db.close()
 
